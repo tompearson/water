@@ -1,0 +1,4 @@
+include ':tropicalfish'
+include ':krill'
+include ':bluewhale'
+rootProject.name = "water"
