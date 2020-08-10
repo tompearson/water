@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-//apply plugin: 'com.android.library'
 
 buildscript {
+
     ext.kotlin_version = "1.3.72"
     repositories {
         google()
@@ -15,20 +15,6 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-//task hello {
-//    doLast { task ->
-//        println "I'm $task.project.name"
-//    }
-//}
-//android {
-//    buildTypes {
-//        release {
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
-//    }
-//
-//}
 allprojects {
     repositories {
         google()
@@ -36,7 +22,7 @@ allprojects {
     }
     task hello {
         doLast { task ->
-            println "I'm $task.project.name"
+            println "I'm $task.project.name (task.project.name)"
         }
     }
 }
