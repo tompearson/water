@@ -1,13 +1,21 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 // This code was used to try and figure out why executing
-//  ./gradlew -q afterEvaluate --stacktrace causes and error
+//  ./gradlew -q afterEvaluate --stacktrace causes an error
 //  "Could not compile build file 'C:\Users\Tom\AndroidStudioProjects\water\build.gradle'."
 //  And yet ./gradlew -q hello --stacktrace  works fine. Both use the afterEvaluate maven function.
 // https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:defining_common_behavior
+// The good news is for both debug and release aar files ar output.
 
 // More publishing ...
 //  https://dzone.com/articles/publishing-multi-module-android-libraries
+
+//https://github.com/dcendents/android-maven-plugin
+//If you came here looking for the Gradle Android Maven plugin, I have renamed the project following a request from the android-maven-plugin developers.
+//
+//For the android-maven-gradle-plugin go to: https://github.com/dcendents/android-maven-gradle-plugin (To let you install your aar libraries into the local maven repository)
+//
+//For the android-maven-plugin go to: http://simpligility.github.io/android-maven-plugin/ (To do android development using maven)
 
 buildscript {
 
@@ -23,8 +31,17 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+    repositories {
+        mavenLocal()
+    }
+}
+plugins {
+    id "maven-publish"
+    id "java"
 }
 allprojects {
+    group = "com.group"
+    version = "1.0.0"
     repositories {
         google()
         jcenter()
@@ -36,8 +53,10 @@ allprojects {
     }
 }
 subprojects {
+    apply plugin: "maven-publish"
+
     hello {
-        doLast {println "- I depend on water"}
+        doLast { println "- I depend on water" }
     }
 
     afterEvaluate { Project project ->
@@ -47,23 +66,48 @@ subprojects {
 //         Could not compile build file 'C:\Users\Tom\AndroidStudioProjects\water\build.gradle'.
 
 
-    //        ./gradlew -q hello --stacktrace
-    //I'm water (task.project.name)
-    //I'm bluewhale (task.project.name)
-    //- I depend on water
-    //- I'm the largest animal that has ever lived on this planet.
-    //- I love to spend time in the arctic waterssss.
-    //I'm krill (task.project.name)
-    //- I depend on water
-    //- The weight of my species in summer is twice as heavy as all human beings.
-    //- I love to spend time in the arctic waters.
-    //I'm tropicalfish (task.project.name)
-    //- I depend on water
+        //        ./gradlew -q hello --stacktrace
+        //I'm water (task.project.name)
+        //I'm bluewhale (task.project.name)
+        //- I depend on water
+        //- I'm the largest animal that has ever lived on this planet.
+        //- I love to spend time in the arctic waterssss.
+        //I'm krill (task.project.name)
+        //- I depend on water
+        //- The weight of my species in summer is twice as heavy as all human beings.
+        //- I love to spend time in the arctic waters.
+        //I'm tropicalfish (task.project.name)
+        //- I depend on water
 
         if (project.arctic) {
             hello.configure {
                 doLast {
                     println '- I love to spend time in the arctic waters.'
+                }
+            }
+        }
+        apply plugin: "maven-publish"
+        apply plugin: "java"
+
+        publishing {// ./gradlew publishToMavenLocal --info    This will create the file structure
+//            in C:\Users\Tom\.m2\repository\com
+//            water-bluewhale
+//            water-krill
+//            water-tropicalfish
+            publications {
+                maven(MavenPublication) {
+                    artifactId = "$rootProject.name-$project.name"
+                    println "Message: testing plugins.hasPlugin $rootProject.name-$project.name"
+
+                    if (plugins.hasPlugin("java")) {
+                        println "Message: found plugins.hasPlugin $rootProject.name-$project.name"
+                        from components.java
+                    }
+//                    if (plugins.hasPlugin("java")) {
+//                        from components.java
+//                    } else if (plugins.hasPlugin("android-library")) {
+//                        from components.android
+//                    }
                 }
             }
         }
