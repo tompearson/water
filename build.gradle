@@ -1,5 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+// This code was used to try and figure out why executing
+//  ./gradlew -q afterEvaluate --stacktrace causes and error
+//  "Could not compile build file 'C:\Users\Tom\AndroidStudioProjects\water\build.gradle'."
+//  And yet ./gradlew -q hello --stacktrace  works fine. Both use the afterEvaluate maven function.
+// https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:defining_common_behavior
+
+// More publishing ...
+//  https://dzone.com/articles/publishing-multi-module-android-libraries
+
 buildscript {
 
     ext.kotlin_version = "1.3.72"
@@ -32,6 +41,25 @@ subprojects {
     }
 
     afterEvaluate { Project project ->
+// Notes:
+//        Executing ./gradlew -q hello --stacktrace gives the results below with no errors
+//        However executing ./gradlew -q afterEvaluate --stacktrace
+//         Could not compile build file 'C:\Users\Tom\AndroidStudioProjects\water\build.gradle'.
+
+
+    //        ./gradlew -q hello --stacktrace
+    //I'm water (task.project.name)
+    //I'm bluewhale (task.project.name)
+    //- I depend on water
+    //- I'm the largest animal that has ever lived on this planet.
+    //- I love to spend time in the arctic waterssss.
+    //I'm krill (task.project.name)
+    //- I depend on water
+    //- The weight of my species in summer is twice as heavy as all human beings.
+    //- I love to spend time in the arctic waters.
+    //I'm tropicalfish (task.project.name)
+    //- I depend on water
+
         if (project.arctic) {
             hello.configure {
                 doLast {
