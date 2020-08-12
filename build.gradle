@@ -27,6 +27,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'digital.wup:android-maven-publish:3.6.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -40,7 +41,7 @@ plugins {
     id "java"
 }
 allprojects {
-    group = "com.group"
+    group = "com.library.tappyplay.pocketknife"
     version = "1.0.0"
     repositories {
         google()
@@ -54,6 +55,7 @@ allprojects {
 }
 subprojects {
     apply plugin: "maven-publish"
+    apply plugin: 'digital.wup.android-maven-publish'
 
     hello {
         doLast { println "- I depend on water" }
@@ -86,8 +88,8 @@ subprojects {
                 }
             }
         }
-        apply plugin: "maven-publish"
-        apply plugin: "java"
+//        apply plugin: "maven-publish"
+//        apply plugin: "java"
 
         publishing {// ./gradlew publishToMavenLocal --info    This will create the file structure
 //            in C:\Users\Tom\.m2\repository\com
@@ -95,14 +97,14 @@ subprojects {
 //            water-krill
 //            water-tropicalfish
             publications {
-                maven(MavenPublication) {
+                mavenArr(MavenPublication) {
                     artifactId = "$rootProject.name-$project.name"
-                    println "Message: testing plugins.hasPlugin $rootProject.name-$project.name"
-
-                    if (plugins.hasPlugin("java")) {
-                        println "Message: found plugins.hasPlugin $rootProject.name-$project.name"
-                        from components.java
-                    }
+                    println "Message: from components.android $rootProject.name-$project.name"
+                    from components.android
+//                    if (plugins.hasPlugin("java")) {
+//                        println "Message: found plugins.hasPlugin $rootProject.name-$project.name"
+//                        from components.android
+//                    }
 //                    if (plugins.hasPlugin("java")) {
 //                        from components.java
 //                    } else if (plugins.hasPlugin("android-library")) {
