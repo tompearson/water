@@ -41,7 +41,7 @@ plugins {
     id "java"
 }
 allprojects {
-    group = "com.library.tappyplay.pocketknife"
+    group = "com.library.tappyplay.water"
     version = "1.0.0"
     repositories {
         google()
